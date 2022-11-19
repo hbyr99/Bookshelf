@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { Observable } from 'rxjs';
+import { DataService } from '../services/data.service';
+import { Book } from '../utils/interfaces';
 
 @Component({
   selector: 'app-folder',
@@ -9,17 +12,21 @@ import { OverlayEventDetail } from '@ionic/core/components';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
-  public folder: string | null = '';
+  public folder: string = '';
   @ViewChild(IonModal) modal!: IonModal;
   message =
     'This modal example uses triggers to automatically open a modal when the button is clicked.';
   bookName: string = '';
-
-  constructor(private activatedRoute: ActivatedRoute) {}
-
-  ngOnInit() {
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+  book$: Observable<Book[]>;
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    public dataService: DataService
+  ) {
+    this.folder = activatedRoute.snapshot.paramMap.get('id')!;
+    this.book$ = dataService.getBooks$(this.folder);
   }
+
+  ngOnInit() {}
 
   cancel() {
     this.modal.dismiss(null, 'cancel');

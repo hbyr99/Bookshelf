@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DataService } from './services/data.service';
 import { Shelf } from './utils/interfaces';
 
 @Component({
@@ -7,18 +9,9 @@ import { Shelf } from './utils/interfaces';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  public shelfList: Shelf[] = [
-    { title: 'Shelf 1', url: '/folder/Shelf 1' },
-    { title: 'Shelf 2', url: '/folder/Shelf 2' },
-    { title: 'Shelf 3', url: '/folder/Shelf 3' },
-    { title: 'Shelf 4', url: '/folder/Shelf 4' },
-  ];
+  public shelfList: Observable<Shelf[]>;
   public labels = ['Favorites', 'Wishlist'];
-  constructor() {}
-
-  addShelf(title : string) {
-    const url = `folder/${title}`;
-    const newShelf : Shelf = {title, url};
-    this.shelfList.push(newShelf);
+  constructor(public dataService: DataService) {
+    this.shelfList = dataService.shelves$;
   }
 }

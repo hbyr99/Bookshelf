@@ -1,7 +1,5 @@
 export interface Shelf {
-  title: string;
-  url: string;
-  books?: Book[];
+  name: string;
 }
 
 export interface Book {
