@@ -8,3 +8,8 @@ export interface Book {
   genre: string;
   favorite: boolean;
 }
+
+export interface UserPhoto {
+  filepath: string;
+  webviewPath: string;
+}

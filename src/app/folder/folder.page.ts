@@ -4,6 +4,7 @@ import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Observable } from 'rxjs';
 import { DataService } from '../services/data.service';
+import { PhotoService } from '../services/photo.service';
 import { Book } from '../utils/interfaces';
 
 @Component({
@@ -12,15 +13,15 @@ import { Book } from '../utils/interfaces';
   styleUrls: ['./folder.page.scss'],
 })
 export class FolderPage implements OnInit {
-  public folder: string = '';
   @ViewChild(IonModal) modal!: IonModal;
-  message =
-    'This modal example uses triggers to automatically open a modal when the button is clicked.';
-  bookName: string = '';
-  book$: Observable<Book[]>;
+  public folder: string = '';
+  public bookName: string = '';
+  public book$: Observable<Book[]>;
+
   constructor(
     private activatedRoute: ActivatedRoute,
-    public dataService: DataService
+    public dataService: DataService,
+    public photoService: PhotoService
   ) {
     this.folder = activatedRoute.snapshot.paramMap.get('id')!;
     this.book$ = dataService.getBooks$(this.folder);
@@ -39,7 +40,11 @@ export class FolderPage implements OnInit {
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
     if (ev.detail.role === 'confirm') {
-      this.message = `Hello, ${ev.detail.data}!`;
+      true
     }
+  }
+
+  takePhoto() : void {
+    this.photoService.takePhoto();
   }
 }
