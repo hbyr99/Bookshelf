@@ -7,7 +7,8 @@ import {
   setDoc,
   query,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { CapacitorHttp } from '@capacitor/core';
+import { from, Observable } from 'rxjs';
 
 import { Book, Shelf } from '../utils/interfaces';
 
@@ -17,6 +18,7 @@ import { Book, Shelf } from '../utils/interfaces';
 export class DataService {
   private userID = 'oms1mKDUn7hzty6Ks8Kw';
   public shelves$: Observable<Shelf[]>;
+
   constructor(private firestore: Firestore) {
     const shelves = collection(firestore, 'users', this.userID, 'shelves');
     this.shelves$ = collectionData(shelves) as Observable<Shelf[]>;
@@ -45,5 +47,23 @@ export class DataService {
         name: shelfName,
       }
     );
+  }
+
+  public findBook(bookName: string): Observable<any> {
+    const APIKey = 'AIzaSyChtrHz2afCweT8Uk1BKKG7-rnbsNTyzy4';
+    
+    const options = {
+      url: 'https://www.googleapis.com/books/v1/volumes',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        q: bookName,
+        key: APIKey,
+      },
+    };
+    return from(CapacitorHttp.get(options));
+    
+    
   }
 }

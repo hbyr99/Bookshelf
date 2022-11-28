@@ -21,30 +21,11 @@ export class FolderPage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     public dataService: DataService,
-    public photoService: PhotoService
   ) {
     this.folder = activatedRoute.snapshot.paramMap.get('id')!;
     this.book$ = dataService.getBooks$(this.folder);
+    dataService.findBook('1q84').forEach(res => {console.log(res.data)});
   }
 
   ngOnInit() {}
-
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  confirm() {
-    this.modal.dismiss(this.bookName, 'confirm');
-  }
-
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      true
-    }
-  }
-
-  takePhoto() : void {
-    this.photoService.takePhoto();
-  }
 }

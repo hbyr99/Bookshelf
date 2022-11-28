@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DataService } from './services/data.service';
 import { Shelf } from './utils/interfaces';

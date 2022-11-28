@@ -33,6 +33,22 @@
         </ion-list>
       </ion-footer>
     </ion-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
+    <ion-router-outlet id="main-content">
+    </ion-router-outlet>
   </ion-split-pane>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" id="open-popover">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-popover trigger="open-popover" side="left" alignment="start" [dismissOnSelect]="true">
+      <ng-template>
+        <ion-content>
+          <ion-list>
+            <ion-item [button]="true" [detail]="false">Option 1</ion-item>
+            <ion-item [button]="true" [detail]="false">Option 2</ion-item>
+          </ion-list>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
+  </ion-fab>
 </ion-app>
