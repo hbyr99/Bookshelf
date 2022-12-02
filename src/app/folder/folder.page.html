@@ -16,13 +16,22 @@
 
   <div id="container">
     <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI
-        Components</a></p>
+    <p>
+      Explore
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://ionicframework.com/docs/components"
+        >UI Components</a
+      >
+    </p>
   </div>
   <div *ngFor="let book of book$ | async">
-    <p>{{book.author}}</p>
-    <p>{{book.title}}</p>
-    <p>{{book.genre}}</p>
-    <p></p>
+    <app-book-cover
+      author="{{book.author}}"
+      title="{{book.title}}"
+      genre="{{book.genre}}"
+    >
+    </app-book-cover>
   </div>
 </ion-content>
