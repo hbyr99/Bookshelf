@@ -37,18 +37,35 @@
     </ion-router-outlet>
   </ion-split-pane>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="primary" id="open-popover">
+    <ion-fab-button color="primary">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
-    <ion-popover trigger="open-popover" side="left" alignment="start" [dismissOnSelect]="true">
-      <ng-template>
-        <ion-content>
-          <ion-list>
-            <ion-item [button]="true" [detail]="false">Option 1</ion-item>
-            <ion-item [button]="true" [detail]="false">Option 2</ion-item>
-          </ion-list>
-        </ion-content>
-      </ng-template>
-    </ion-popover>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="setSearchBook(true)">
+        <ion-icon name="search"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button>
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
+  <ion-modal [isOpen]="isSearchBook">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>FIND BOOK</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setSearchBook(false)">Cancel</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum quidem recusandae ducimus quos
+          reprehenderit. Veniam, molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui. Eaque,
+          dicta.
+        </p>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-app>

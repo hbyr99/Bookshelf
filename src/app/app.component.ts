@@ -10,8 +10,13 @@ import { Shelf } from './utils/interfaces';
 })
 export class AppComponent {
   public shelfList: Observable<Shelf[]>;
-  public labels = ['Favorites', 'Wishlist'];
+  public labels: string[] = ['Favorites', 'Wishlist'];
+  public isSearchBook: boolean = false;
   constructor(public dataService: DataService) {
     this.shelfList = dataService.shelves$;
+  }
+
+  public setSearchBook(state: boolean): void {
+    this.isSearchBook = state;
   }
 }
