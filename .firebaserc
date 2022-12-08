@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "angular-shelf": {
+      "hosting": {
+        "app": [
+          "angular-shelf"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "angular-shelf"
+  }
+}

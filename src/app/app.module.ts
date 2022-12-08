@@ -12,6 +12,7 @@ import {
   getFirestore,
   enableMultiTabIndexedDbPersistence,
 } from '@angular/fire/firestore';
+import { provideAuth,getAuth } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import {
       enableMultiTabIndexedDbPersistence(firestore);
       return firestore;
     }),
+    provideAuth(() => getAuth()),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
