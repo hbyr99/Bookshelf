@@ -24,7 +24,6 @@ export class FolderPage implements OnInit {
   ) {
     this.folder = activatedRoute.snapshot.paramMap.get('id')!;
     this.book$ = dataService.getBooks$(this.folder);
-    dataService.findBook('1q84').forEach(res => {console.log(res.data)});
   }
 
   ngOnInit() {}

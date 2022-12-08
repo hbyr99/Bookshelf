@@ -4,9 +4,10 @@ export interface Shelf {
 
 export interface Book {
   title: string;
-  author: string;
-  genre: string;
-  favorite: boolean;
+  authors: string[];
+  categories: string[];
+  description: string;
+  imageLinks: { smallThumbnail: string; thumbnail: string };
 }
 
 export interface UserPhoto {

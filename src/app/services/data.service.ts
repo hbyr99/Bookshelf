@@ -7,7 +7,7 @@ import {
   setDoc,
   query,
 } from '@angular/fire/firestore';
-import { CapacitorHttp } from '@capacitor/core';
+import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 import { from, Observable } from 'rxjs';
 
 import { Book, Shelf } from '../utils/interfaces';
@@ -49,9 +49,10 @@ export class DataService {
     );
   }
 
-  public findBook(bookName: string): Observable<any> {
+  public async findBook(bookName: string): Promise<Book[]> {
+    let booksFound: any[] = [];
     const APIKey = 'AIzaSyChtrHz2afCweT8Uk1BKKG7-rnbsNTyzy4';
-    
+
     const options = {
       url: 'https://www.googleapis.com/books/v1/volumes',
       headers: {
@@ -62,8 +63,9 @@ export class DataService {
         key: APIKey,
       },
     };
-    return from(CapacitorHttp.get(options));
-    
-    
+    //await from(CapacitorHttp.get(options)).forEach(res => booksFound.push(res.data.items));
+
+    const res = await CapacitorHttp.get(options);
+    return res.data.items.map((entry: any) => entry.volumeInfo as Book);
   }
 }

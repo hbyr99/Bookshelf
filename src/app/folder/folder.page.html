@@ -28,9 +28,9 @@
   </div>
   <div *ngFor="let book of book$ | async">
     <app-book-cover
-      author="{{book.author}}"
+      author="{{book.authors}}"
       title="{{book.title}}"
-      genre="{{book.genre}}"
+      genre="{{book.categories}}"
     >
     </app-book-cover>
   </div>

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { DataService } from './services/data.service';
-import { Shelf } from './utils/interfaces';
+import { Book, Shelf } from './utils/interfaces';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +12,19 @@ export class AppComponent {
   public shelfList: Observable<Shelf[]>;
   public labels: string[] = ['Favorites', 'Wishlist'];
   public isSearchBook: boolean = false;
+  public bookList: Book[] = [];
+
   constructor(public dataService: DataService) {
     this.shelfList = dataService.shelves$;
   }
 
   public setSearchBook(state: boolean): void {
     this.isSearchBook = state;
+  }
+
+  public async handleChange(event: any): Promise<void> {
+    const res = await this.dataService.findBook(event.target.value);
+    console.log(res);
+    this.bookList = res;
   }
 }
