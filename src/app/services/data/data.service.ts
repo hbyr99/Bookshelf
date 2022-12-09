@@ -6,22 +6,31 @@ import {
   Firestore,
   setDoc,
   query,
+  addDoc,
 } from '@angular/fire/firestore';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
-import { from, Observable } from 'rxjs';
+import { EMPTY, from, Observable } from 'rxjs';
 
-import { Book, Shelf } from '../utils/interfaces';
+import { Book, Shelf } from '../../utils/interfaces';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  private userID = 'oms1mKDUn7hzty6Ks8Kw';
-  public shelves$: Observable<Shelf[]>;
+  private userID: string = '';
+  public shelves$: Observable<Shelf[]> = EMPTY;
 
-  constructor(private firestore: Firestore) {
-    const shelves = collection(firestore, 'users', this.userID, 'shelves');
-    this.shelves$ = collectionData(shelves) as Observable<Shelf[]>;
+  constructor(private firestore: Firestore, private auth: AuthService) {
+    auth.user.subscribe((user) => {
+      if (user) {
+        this.userID = user.uid;
+        const shelves = collection(firestore, 'users', this.userID, 'shelves');
+        this.shelves$ = collectionData(shelves, { idField: 'id' }) as Observable<
+          Shelf[]
+        >;
+      }
+    });
   }
 
   public getBooks$(shelfId: string): Observable<Book[]> {
@@ -33,16 +42,14 @@ export class DataService {
         'shelves',
         shelfId,
         'books'
-      )
+      ),
+      { idField: 'id' }
     ) as Observable<Book[]>;
   }
 
   public addShelf(shelfName: string): void {
-    setDoc(
-      doc(
+    addDoc(
         collection(this.firestore, 'users', this.userID, 'shelves'),
-        shelfName
-      ),
       {
         name: shelfName,
       }

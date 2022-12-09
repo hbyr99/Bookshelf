@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid id="grid">
+    <ion-row>
+      <ion-col size="12">
+        <!-- Template sourced from https://blog.flicher.net/ionic-4-user-registration-login-tutorial/ -->
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister(registerForm)">
+          <div [ngClass]="{'input-fields' : platform === 'ios'}">
+            <ion-item>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input type="email" formControlName="email"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input type="password" formControlName="password"></ion-input>
+            </ion-item>
+          </div>
+
+          <ion-button type="submit" expand="full" color="danger">Register</ion-button>
+        </form>
+        <p text-center>Already have an account?</p>
+        <ion-button expand="full" color="primary" routerLink="/login">Login</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

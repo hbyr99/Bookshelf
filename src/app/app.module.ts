@@ -12,7 +12,9 @@ import {
   getFirestore,
   enableMultiTabIndexedDbPersistence,
 } from '@angular/fire/firestore';
-import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { ReactiveFormsModule } from '@angular/forms';
+import { LoginPage } from './pages/login/login.page';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,6 +22,7 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => {
       const firestore = getFirestore();

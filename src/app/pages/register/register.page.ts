@@ -6,13 +6,13 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.scss'],
+  selector: 'app-register',
+  templateUrl: './register.page.html',
+  styleUrls: ['./register.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class RegisterPage implements OnInit {
   public platform: string;
-  public loginForm: FormGroup;
+  public registerForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,20 +22,20 @@ export class LoginPage implements OnInit {
     private router: Router
   ) {
     this.platform = Capacitor.getPlatform();
-    this.loginForm = formBuilder.group({
+    this.registerForm = formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(7)]],
     });
   }
 
-  public async onLogin(form: FormGroup): Promise<void> {
+  public async onRegister(form: FormGroup): Promise<void> {
     const loading = await this.loadingCtrl.create();
     await loading.present();
     try {
       if (form.valid) {
-        await this.auth.loginUser(form.value.email, form.value.password);
+        await this.auth.signupUser(form.value.email, form.value.password);
       } else {
-        throw new Error("Invalid email or password");
+        throw new Error('Invalid email or password');
       }
       loading.dismiss();
       this.router.navigateByUrl('');
