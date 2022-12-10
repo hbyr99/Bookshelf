@@ -26,9 +26,9 @@ export class DataService {
       if (user) {
         this.userID = user.uid;
         const shelves = collection(firestore, 'users', this.userID, 'shelves');
-        this.shelves$ = collectionData(shelves, { idField: 'id' }) as Observable<
-          Shelf[]
-        >;
+        this.shelves$ = collectionData(shelves, {
+          idField: 'id',
+        }) as Observable<Shelf[]>;
       }
     });
   }
@@ -48,10 +48,27 @@ export class DataService {
   }
 
   public addShelf(shelfName: string): void {
+    addDoc(collection(this.firestore, 'users', this.userID, 'shelves'), {
+      name: shelfName,
+    });
+  }
+
+  public addBook(book: Book, shelfID: string): void {
     addDoc(
-        collection(this.firestore, 'users', this.userID, 'shelves'),
+      collection(
+        this.firestore,
+        'users',
+        this.userID,
+        'shelves',
+        shelfID,
+        'books'
+      ),
       {
-        name: shelfName,
+        title: book.title,
+        authors: book.authors,
+        categories: book.categories,
+        description: book.description,
+        imageLinks: book.imageLinks,
       }
     );
   }
