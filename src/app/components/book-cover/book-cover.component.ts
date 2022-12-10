@@ -6,20 +6,30 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
   styleUrls: ['./book-cover.component.scss'],
 })
 export class BookCoverComponent implements OnInit {
+  @Input() authors: string = ' ';
+  @Input() title: string = ' ';
+  @Input() categories: string = ' ';
+  @Input() description: string = ' ';
 
-  @Input() author: string;
-  @Input() title: string;
-  @Input() genre: string;
+  public authorList: string[] = [];
+  public categoryList: string[] = [];
 
-  bookInfo: any;
+  public isOpenBookInfo: boolean = false;
 
-  constructor() {
-    this.author = " ";
-    this.title = " ";
-    this.genre = " ";
+  constructor() {}
+
+  public openBookInfo() {
+    this.isOpenBookInfo = true;
+
+    this.authorList = this.authors.split(',');
+    this.categoryList = this.categories.split(',');
+
+    console.log(this.authorList);
   }
 
-  ngOnInit() {
-    this.bookInfo = document.querySelector('.book-info');
+  public closeBookInfo() {
+    this.isOpenBookInfo = false;
   }
+
+  ngOnInit() {}
 }
