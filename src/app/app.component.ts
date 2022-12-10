@@ -112,8 +112,10 @@ export class AppComponent {
   }
 
   public async startScan(): Promise<void> {
-    const isbn = '';
-    const res = await this.data.findBook(isbn);
-    console.log(res);
+    const isbn = await this.scan.scanBarcode();
+    if (isbn) {
+      const res = await this.data.findBook(isbn);
+      this.openBookInfo(res[0]);
+    }
   }
 }

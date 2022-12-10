@@ -1,6 +1,6 @@
-<ion-app>
+<ion-app >
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay" [hidden]="!auth.showLoginFeatures">
+    <ion-menu contentId="main-content" type="overlay" [hidden]="!auth.showLoginFeatures || scan.scanActive">
       <ion-content>
         <ion-list id="inbox-list">
           <ion-menu-toggle>
@@ -35,9 +35,9 @@
         </ion-footer>
       </ion-menu-toggle>
     </ion-menu>
-    <ion-router-outlet id="main-content"> </ion-router-outlet>
+    <ion-router-outlet id="main-content" [hidden]="scan.scanActive" [style.--background]="scan.scanActive ? '#00000000' : null"> </ion-router-outlet>
   </ion-split-pane>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" [hidden]="!auth.showLoginFeatures">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" [hidden]="!auth.showLoginFeatures || scan.scanActive">
     <ion-fab-button color="primary">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
