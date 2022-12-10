@@ -1,21 +1,11 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu
-      contentId="main-content"
-      type="overlay"
-      *ngIf="auth.showLoginFeatures"
-    >
+    <ion-menu contentId="main-content" type="overlay" [hidden]="!auth.showLoginFeatures">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-menu-toggle auto-hide="false">
-            <ion-item
-              *ngFor="let shelf of shelfList | async"
-              routerDirection="root"
-              routerLink="/folder/{{ shelf.id }}"
-              lines="none"
-              detail="false"
-              routerLinkActive="selected"
-            >
+          <ion-menu-toggle>
+            <ion-item *ngFor="let shelf of shelfList | async" routerDirection="root" routerLink="/folder/{{ shelf.id }}"
+              lines="none" detail="false" routerLinkActive="selected">
               <ion-label>{{ shelf.name }}</ion-label>
             </ion-item>
             <ion-item button="true" (click)="data.addShelf('New Shelf')">
@@ -25,38 +15,29 @@
         </ion-list>
 
         <ion-list id="labels-list">
-          <ion-menu-toggle auto-hide="false">
+          <ion-menu-toggle>
             <ion-list-header>Extra stuff space</ion-list-header>
-            <ion-item
-              *ngFor="let label of labels"
-              routerDirection="root"
-              routerLink="/folder/{{ label }}"
-              lines="none"
-              detail="false"
-              routerLinkActive="selected"
-            >
+            <ion-item *ngFor="let label of labels" routerDirection="root" routerLink="/folder/{{ label }}" lines="none"
+              detail="false" routerLinkActive="selected">
               <ion-label>{{ label }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
       </ion-content>
-      <ion-footer>
-        <ion-list>
-          <ion-item (click)="auth.logoutUser()" routerLink="/login">
-            <ion-icon slot="start" name="log-out"></ion-icon>
-            <ion-label>Logout</ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-footer>
+      <ion-menu-toggle>
+        <ion-footer>
+          <ion-list>
+            <ion-item (click)="onLogout()" routerLink="/login">
+              <ion-icon slot="start" name="log-out"></ion-icon>
+              <ion-label>Logout</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-footer>
+      </ion-menu-toggle>
     </ion-menu>
     <ion-router-outlet id="main-content"> </ion-router-outlet>
   </ion-split-pane>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    *ngIf="auth.showLoginFeatures"
-  >
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" [hidden]="!auth.showLoginFeatures">
     <ion-fab-button color="primary">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
@@ -64,7 +45,7 @@
       <ion-fab-button (click)="setSearchBook(true)">
         <ion-icon name="search"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button>
+      <ion-fab-button (click)="startScan()">
         <ion-icon name="camera"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
@@ -80,15 +61,10 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <ion-searchbar
-          [debounce]="500"
-          (ionChange)="handleChange($event)"
-        ></ion-searchbar>
-
+        <ion-searchbar [debounce]="500" (ionChange)="handleChange($event)"></ion-searchbar>
         <ion-list>
           <ion-item *ngFor="let book of bookList">
-            <ion-label (click)="openBookInfo(book)"
-              >{{ book.title }}
+            <ion-label (click)="openBookInfo(book)">{{ book.title }}
             </ion-label>
             <ion-button slot="end" (click)="addBookDirectly(book)">
               <ion-icon name="add-outline"></ion-icon>
@@ -103,9 +79,7 @@
       <ion-header>
         <ion-toolbar>
           <ion-buttons>
-            <ion-button slot="start" (click)="openPicker()"
-              >Add Book</ion-button
-            >
+            <ion-button slot="start" (click)="openPicker()">Add Book</ion-button>
             <ion-button slot="end" (click)="closeBookInfo()">Cancel</ion-button>
           </ion-buttons>
         </ion-toolbar>

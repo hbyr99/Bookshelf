@@ -38,6 +38,7 @@ export class LoginPage implements OnInit {
         throw new Error("Invalid email or password");
       }
       loading.dismiss();
+      form.reset();
       this.router.navigateByUrl('');
     } catch (error) {
       loading.dismiss();

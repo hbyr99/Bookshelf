@@ -1,7 +1,10 @@
-import { Component, ViewChild, OnInit, Input } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { EMPTY, Observable } from 'rxjs';
 import { AuthService } from './services/auth/auth.service';
 import { DataService } from './services/data/data.service';
+import { ScanService } from './services/scan/scan.service';
 import { Book, Shelf } from './utils/interfaces';
 import { PickerController } from '@ionic/angular';
 
@@ -22,7 +25,11 @@ export class AppComponent {
   constructor(
     public data: DataService,
     public auth: AuthService,
-    private pickerCtrl: PickerController
+    private pickerCtrl: PickerController,
+    public scan: ScanService,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
+    private router: Router
   ) {
     auth.user.subscribe((user) => {
       this.shelfList = data.shelves$;
@@ -81,5 +88,32 @@ export class AppComponent {
       });
       await picker.present();
     });
+  }
+  public async onLogout(): Promise<void> {
+    const loading = await this.loadingCtrl.create();
+    await loading.present();
+    try {
+      await this.auth.logoutUser();
+      loading.dismiss();
+      this.router.navigateByUrl('');
+    } catch (error) {
+      loading.dismiss();
+      const alert = await this.alertCtrl.create({
+        message: error as string,
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'cancel',
+          },
+        ],
+      });
+      alert.present();
+    }
+  }
+
+  public async startScan(): Promise<void> {
+    const isbn = '';
+    const res = await this.data.findBook(isbn);
+    console.log(res);
   }
 }
