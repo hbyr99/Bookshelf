@@ -7,6 +7,8 @@ import { DataService } from './services/data/data.service';
 import { ScanService } from './services/scan/scan.service';
 import { Book, Shelf } from './utils/interfaces';
 import { PickerController } from '@ionic/angular';
+import { AlertOptions } from '@ionic/angular';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +31,8 @@ export class AppComponent {
     public scan: ScanService,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    private actionSheetCtrl: ActionSheetController
   ) {
     auth.user.subscribe((user) => {
       this.shelfList = data.shelves$;
@@ -89,6 +92,34 @@ export class AppComponent {
       await picker.present();
     });
   }
+
+  public async shelfNameInput(shelfID: string) {
+    const alert = await this.alertCtrl.create({
+      header: 'Please enter new shelf name',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Confirm',
+          handler: (shelfname) => {
+            this.data.changeShelfName(shelfname.NewShelfName, shelfID);
+          },
+        },
+      ],
+      inputs: [
+        {
+          name: 'NewShelfName',
+          type: 'textarea',
+          placeholder: 'Shelf name',
+          attributes: { maxlength: 50 },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  public async openSettings() {}
+
   public async onLogout(): Promise<void> {
     const loading = await this.loadingCtrl.create();
     await loading.present();

@@ -7,6 +7,9 @@ import {
   setDoc,
   query,
   addDoc,
+  getDoc,
+  updateDoc,
+  docData,
 } from '@angular/fire/firestore';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 import { EMPTY, from, Observable } from 'rxjs';
@@ -47,6 +50,12 @@ export class DataService {
     ) as Observable<Book[]>;
   }
 
+  public getShelf$(shelfId: string): Observable<Shelf> {
+    return docData(
+      doc(this.firestore, 'users', this.userID, 'shelves', shelfId)
+    ) as Observable<Shelf>;
+  }
+
   public addShelf(shelfName: string): void {
     addDoc(collection(this.firestore, 'users', this.userID, 'shelves'), {
       name: shelfName,
@@ -71,6 +80,12 @@ export class DataService {
         imageLinks: book.imageLinks,
       }
     );
+  }
+
+  public changeShelfName(shelfname: string, shelfID: string): void {
+    updateDoc(doc(this.firestore, 'users', this.userID, 'shelves', shelfID), {
+      name: shelfname,
+    });
   }
 
   public async findBook(bookName: string): Promise<Book[]> {

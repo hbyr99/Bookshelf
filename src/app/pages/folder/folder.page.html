@@ -3,19 +3,22 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ folder }}</ion-title>
+    <ion-title>{{ (myShelf$ | async)?.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" [style.--background]="scan.scanActive ? '#00000000' : null">
+<ion-content
+  [fullscreen]="true"
+  [style.--background]="scan.scanActive ? '#00000000' : null"
+>
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">{{ folder }}</ion-title>
+      <ion-title size="large">{{(myShelf$ | async)?.name}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong class="capitalize">{{ folder }}</strong>
+  <!-- <div id="container">
+    <strong class="capitalize">{{ (myShelf$ | async)?.name }}</strong>
     <p>
       Explore
       <a
@@ -25,13 +28,14 @@
         >UI Components</a
       >
     </p>
-  </div>
+  </div>-->
   <div *ngFor="let book of book$ | async">
     <app-book-cover
       authors="{{book.authors}}"
       title="{{book.title}}"
       categories="{{book.categories}}"
       description="{{book.description}}"
+      imageLinks=" {{book.imageLinks.smallThumbnail}}"
     >
     </app-book-cover>
   </div>
