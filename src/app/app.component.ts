@@ -63,6 +63,31 @@ export class AppComponent {
     await this.openPicker();
   }
 
+  public async addNewShelf(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: 'Please enter new shelf name',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Confirm',
+          handler: (shelfName) => {
+            this.data.addShelf(shelfName.NewShelfName);
+          },
+        },
+      ],
+      inputs: [
+        {
+          name: 'NewShelfName',
+          type: 'textarea',
+          placeholder: 'Shelf name',
+          attributes: { maxlength: 50 },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
   public async openPicker(): Promise<void> {
     this.shelfList.pipe(take(1)).subscribe(async (data) => {
       const options = data.map((shelf) => {
@@ -117,84 +142,23 @@ export class AppComponent {
     });
 
     await alert.present();
-    //await alert.onDidDismiss();
   }
 
-  public async openDeleteShelfPicker(): Promise<void> {
-    this.shelfList.pipe(take(1)).subscribe(async (data) => {
-      const options = data.map((shelf) => {
-        return { text: shelf.name, value: shelf.id };
-      });
-      console.log('Open delete shelf picker log');
-      const picker = await this.pickerCtrl.create({
-        columns: [
-          {
-            name: 'shelf',
-            options: options,
-          },
-        ],
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-          },
-          {
-            text: 'Confirm',
-            handler: (selected) => {
-              this.data.deleteShelf(selected.shelf.value);
-            },
-          },
-        ],
-      });
-      await picker.present();
-    });
-  }
-
-  public async openChangeShelfNamePicker(): Promise<void> {
-    this.shelfList.pipe(take(1)).subscribe(async (data) => {
-      const options = data.map((shelf) => {
-        return { text: shelf.name, value: shelf.id };
-      });
-      console.log('Open change shelf picker log');
-      const picker = await this.pickerCtrl.create({
-        columns: [
-          {
-            name: 'shelf',
-            options: options,
-          },
-        ],
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-          },
-          {
-            text: 'Confirm',
-            handler: (selected) => {
-              this.shelfNameInput(selected.shelf.value);
-              console.log('Done!');
-            },
-          },
-        ],
-      });
-      await picker.present();
-    });
-  }
-
-  public async openSettings(): Promise<void> {
+  public async openSettings(shelf: Shelf): Promise<void> {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Edit bookshelves',
       buttons: [
         {
           text: 'Change shelf name',
           handler: () => {
-            this.openChangeShelfNamePicker();
+            this.shelfNameInput(shelf.id);
           },
         },
         {
           text: 'Delete shelf',
           handler: () => {
-            this.openDeleteShelfPicker();
+            this.data.deleteShelf(shelf.id);
+            this.router.navigateByUrl('');
           },
         },
         {
