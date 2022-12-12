@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { EMPTY, Observable, take } from 'rxjs';
@@ -71,7 +71,7 @@ export class AppComponent {
         {
           text: 'Confirm',
           handler: (shelfName) => {
-            this.data.addShelf(shelfName.NewShelfName);
+            this.data.addShelf(shelfName.NewShelfName).then(id => this.router.navigateByUrl('/folder/' + id));
           },
         },
       ],
@@ -115,7 +115,6 @@ export class AppComponent {
         ],
       });
       await picker.present();
-      //await picker.onDidDismiss();
     });
   }
 

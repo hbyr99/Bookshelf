@@ -26,7 +26,7 @@ export class FolderPage implements OnInit {
     public scan: ScanService
   ) {
     this.folder = activatedRoute.snapshot.paramMap.get('id')!;
-    if (this.folder in ['Wishlist', 'Favorites']) {
+    if (this.folder  === 'Wishlist' || this.folder === 'Favorites') {
       dataService.addShelf(this.folder);
     }
     this.myShelf$ = dataService.getShelf$(this.folder);

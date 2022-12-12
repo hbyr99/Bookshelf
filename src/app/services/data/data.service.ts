@@ -57,20 +57,18 @@ export class DataService {
     ) as Observable<Shelf>;
   }
 
-  public addShelf(shelfName: string): void {
-    if (shelfName === 'Favorites') {
+  public async addShelf(shelfName: string): Promise<string> {
+    if (shelfName === 'Favorites' || shelfName === 'Wishlist') {
       setDoc(
-        doc(this.firestore, 'users', this.userID, 'shelves', 'Favorites'),
-        { name: shelfName }
+        doc(this.firestore, 'users', this.userID, 'shelves', shelfName),
+        { name: shelfName, }
       );
-    } else if (shelfName === 'Wishlist') {
-      setDoc(doc(this.firestore, 'users', this.userID, 'shelves', 'Wishlist'), {
-        name: shelfName,
-      });
+      return shelfName;
     } else {
-      addDoc(collection(this.firestore, 'users', this.userID, 'shelves'), {
+      const docRef =  await addDoc(collection(this.firestore, 'users', this.userID, 'shelves'), {
         name: shelfName,
       });
+      return docRef.id;
     }
   }
 
