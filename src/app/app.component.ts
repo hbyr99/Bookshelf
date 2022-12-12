@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, take } from 'rxjs';
 import { AuthService } from './services/auth/auth.service';
 import { DataService } from './services/data/data.service';
 import { ScanService } from './services/scan/scan.service';
@@ -64,11 +64,11 @@ export class AppComponent {
   }
 
   public async openPicker(): Promise<void> {
-    this.shelfList.subscribe(async (data) => {
+    this.shelfList.pipe(take(1)).subscribe(async (data) => {
       const options = data.map((shelf) => {
         return { text: shelf.name, value: shelf.id };
       });
-      console.log(options);
+      console.log('Open picker log');
       const picker = await this.pickerCtrl.create({
         columns: [
           {
@@ -90,10 +90,11 @@ export class AppComponent {
         ],
       });
       await picker.present();
+      //await picker.onDidDismiss();
     });
   }
 
-  public async shelfNameInput(shelfID: string) {
+  public async shelfNameInput(shelfID: string): Promise<void> {
     const alert = await this.alertCtrl.create({
       header: 'Please enter new shelf name',
       buttons: [
@@ -116,9 +117,98 @@ export class AppComponent {
     });
 
     await alert.present();
+    //await alert.onDidDismiss();
   }
 
-  public async openSettings() {}
+  public async openDeleteShelfPicker(): Promise<void> {
+    this.shelfList.pipe(take(1)).subscribe(async (data) => {
+      const options = data.map((shelf) => {
+        return { text: shelf.name, value: shelf.id };
+      });
+      console.log('Open delete shelf picker log');
+      const picker = await this.pickerCtrl.create({
+        columns: [
+          {
+            name: 'shelf',
+            options: options,
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+          },
+          {
+            text: 'Confirm',
+            handler: (selected) => {
+              this.data.deleteShelf(selected.shelf.value);
+            },
+          },
+        ],
+      });
+      await picker.present();
+    });
+  }
+
+  public async openChangeShelfNamePicker(): Promise<void> {
+    this.shelfList.pipe(take(1)).subscribe(async (data) => {
+      const options = data.map((shelf) => {
+        return { text: shelf.name, value: shelf.id };
+      });
+      console.log('Open change shelf picker log');
+      const picker = await this.pickerCtrl.create({
+        columns: [
+          {
+            name: 'shelf',
+            options: options,
+          },
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+          },
+          {
+            text: 'Confirm',
+            handler: (selected) => {
+              this.shelfNameInput(selected.shelf.value);
+              console.log('Done!');
+            },
+          },
+        ],
+      });
+      await picker.present();
+    });
+  }
+
+  public async openSettings(): Promise<void> {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Edit bookshelves',
+      buttons: [
+        {
+          text: 'Change shelf name',
+          handler: () => {
+            this.openChangeShelfNamePicker();
+          },
+        },
+        {
+          text: 'Delete shelf',
+          handler: () => {
+            this.openDeleteShelfPicker();
+          },
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          data: {
+            action: 'cancel',
+          },
+        },
+      ],
+    });
+
+    await actionSheet.present();
+  }
 
   public async onLogout(): Promise<void> {
     const loading = await this.loadingCtrl.create();

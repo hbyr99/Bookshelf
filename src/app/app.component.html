@@ -17,24 +17,15 @@
               routerLinkActive="selected"
             >
               <ion-label>{{ shelf.name }}</ion-label>
-              <!--    <ion-buttons>
-                <ion-button (click)="shelfNameInput(shelf.id)"
-                  ><ion-icon name="settings-outline"> </ion-icon>
-                </ion-button>
-                <ion-button>
-                  <ion-icon name="trash-outline"></ion-icon>
-                </ion-button>
-              </ion-buttons>-->
             </ion-item>
-            <ion-item>
-              <ion-buttons slot="start">
-                <ion-button>
-                  <ion-icon name="settings-outline"> </ion-icon>
-                </ion-button>
-              </ion-buttons>
-            </ion-item>
+
             <ion-item button="true" (click)="data.addShelf('New Shelf')">
+              <ion-icon name="add-outline"></ion-icon>
               <ion-label>Add shelf</ion-label>
+            </ion-item>
+            <ion-item button="true" (click)="openSettings()">
+              <ion-icon name="settings-outline"></ion-icon>
+              <ion-label> Edit shelf </ion-label>
             </ion-item>
           </ion-menu-toggle>
         </ion-list>

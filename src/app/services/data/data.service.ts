@@ -12,6 +12,7 @@ import {
   docData,
 } from '@angular/fire/firestore';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
+import { deleteDoc } from 'firebase/firestore';
 import { EMPTY, from, Observable } from 'rxjs';
 
 import { Book, Shelf } from '../../utils/interfaces';
@@ -86,6 +87,10 @@ export class DataService {
     updateDoc(doc(this.firestore, 'users', this.userID, 'shelves', shelfID), {
       name: shelfname,
     });
+  }
+
+  public deleteShelf(shelfID: string): void {
+    deleteDoc(doc(this.firestore, 'users', this.userID, 'shelves', shelfID));
   }
 
   public async findBook(bookName: string): Promise<Book[]> {
