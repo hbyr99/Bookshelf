@@ -58,9 +58,20 @@ export class DataService {
   }
 
   public addShelf(shelfName: string): void {
-    addDoc(collection(this.firestore, 'users', this.userID, 'shelves'), {
-      name: shelfName,
-    });
+    if (shelfName === 'Favorites') {
+      setDoc(
+        doc(this.firestore, 'users', this.userID, 'shelves', 'Favorites'),
+        { name: shelfName }
+      );
+    } else if (shelfName === 'Wishlist') {
+      setDoc(doc(this.firestore, 'users', this.userID, 'shelves', 'Wishlist'), {
+        name: shelfName,
+      });
+    } else {
+      addDoc(collection(this.firestore, 'users', this.userID, 'shelves'), {
+        name: shelfName,
+      });
+    }
   }
 
   public addBook(book: Book, shelfID: string): void {

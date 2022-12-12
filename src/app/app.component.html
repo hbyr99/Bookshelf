@@ -1,22 +1,21 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu
-      contentId="main-content"
-      type="overlay"
-      [hidden]="!auth.showLoginFeatures || scan.scanActive"
-    >
+    <ion-menu contentId="main-content" type="overlay" [hidden]="!auth.showLoginFeatures || scan.scanActive">
       <ion-content>
         <ion-list id="inbox-list">
           <ion-menu-toggle>
-            <ion-item
-              *ngFor="let shelf of shelfList | async"
-              routerDirection="root"
-              routerLink="/folder/{{ shelf.id }}"
-              lines="none"
-              detail="false"
-              routerLinkActive="selected"
-            >
-              <ion-label>{{ shelf.name }}</ion-label>
+            <section *ngFor="let shelf of shelfList | async">
+              <ion-item *ngIf="shelf.name !== 'Favorites' && shelf.name !== 'Wishlist'" routerDirection="root"
+                routerLink="/folder/{{ shelf.id }}" lines="none" detail="false" routerLinkActive="selected">
+                <ion-label>{{ shelf.name }}</ion-label>
+              </ion-item>
+            </section>
+            <ion-item>
+              <ion-buttons slot="start">
+                <ion-button>
+                  <ion-icon name="settings-outline"> </ion-icon>
+                </ion-button>
+              </ion-buttons>
             </ion-item>
 
             <ion-item button="true" (click)="data.addShelf('New Shelf')">
@@ -33,14 +32,8 @@
         <ion-list id="labels-list">
           <ion-menu-toggle>
             <ion-list-header>Extra stuff space</ion-list-header>
-            <ion-item
-              *ngFor="let label of labels"
-              routerDirection="root"
-              routerLink="/folder/{{ label }}"
-              lines="none"
-              detail="false"
-              routerLinkActive="selected"
-            >
+            <ion-item *ngFor="let label of labels" routerDirection="root" routerLink="/folder/{{ label }}" lines="none"
+              detail="false" routerLinkActive="selected">
               <ion-label>{{ label }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -57,19 +50,11 @@
         </ion-footer>
       </ion-menu-toggle>
     </ion-menu>
-    <ion-router-outlet
-      id="main-content"
-      [hidden]="scan.scanActive"
-      [style.--background]="scan.scanActive ? '#00000000' : null"
-    >
+    <ion-router-outlet id="main-content" [hidden]="scan.scanActive"
+      [style.--background]="scan.scanActive ? '#00000000' : null">
     </ion-router-outlet>
   </ion-split-pane>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    [hidden]="!auth.showLoginFeatures || scan.scanActive"
-  >
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" [hidden]="!auth.showLoginFeatures || scan.scanActive">
     <ion-fab-button color="primary">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
@@ -93,14 +78,10 @@
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">
-        <ion-searchbar
-          [debounce]="500"
-          (ionChange)="handleChange($event)"
-        ></ion-searchbar>
+        <ion-searchbar [debounce]="500" (ionChange)="handleChange($event)"></ion-searchbar>
         <ion-list>
           <ion-item *ngFor="let book of bookList">
-            <ion-label (click)="openBookInfo(book)"
-              >{{ book.title }}
+            <ion-label (click)="openBookInfo(book)">{{ book.title }}
             </ion-label>
             <ion-button slot="end" (click)="addBookDirectly(book)">
               <ion-icon name="add-outline"></ion-icon>
@@ -115,9 +96,7 @@
       <ion-header>
         <ion-toolbar>
           <ion-buttons>
-            <ion-button slot="start" (click)="openPicker()"
-              >Add Book</ion-button
-            >
+            <ion-button slot="start" (click)="openPicker()">Add Book</ion-button>
             <ion-button slot="end" (click)="closeBookInfo()">Cancel</ion-button>
           </ion-buttons>
         </ion-toolbar>
