@@ -1,3 +1,8 @@
+*{
+  font-family:Georgia, 'Times New Roman', Times, serif !important;
+  //border: red solid 1px;
+}
+
 ion-menu ion-content {
   --background: var(--ion-item-background, var(--ion-background-color, #fff));
 }
@@ -120,4 +125,76 @@ ion-item.selected {
 
 ion-popover {
   --width: 80px;
+}
+
+ion-searchbar{
+  padding: 0% 0% 0% 0%;
+}
+
+#shelf-list{
+  padding: 0% 0% 0% 0%;
+}
+
+#bookList{
+  padding: 0% 0% 0% 0%;
+}
+
+
+ion-label.bookLabel{
+
+  margin: auto 0% auto 0%;
+  border-width: 200%;
+  font-size: 80%;
+}
+
+#addBookButton{
+  width: 90%;
+  margin: 0% 0% 0% 50%;
+}
+
+#searchListAuthorName{
+  font-size: 80%;
+}
+
+ion-toast.custom-toast {
+  --background: red;
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --color: #4b4a50;
+}
+
+h1{
+  font-weight: bold;
+  text-align: center;
+  margin: auto;
+  padding: 10% 0% 00% 0%;
+}
+
+.info-image{
+  display: block;
+  margin: auto;
+  padding: 0%;
+  border-radius: 1rem;
+  width: 50%;
+}
+
+.authorName{
+  display: block;
+  text-align: center;
+  color: black;
+  margin: 0% 0% 0% 0%;
+  padding: 0%;
+}
+
+.genre{
+  display: block;
+  text-align: center;
+  color: black;
+  margin: 0% 0% 0% 0%;
+  padding: 0%;
+}
+
+.description{
+  padding: 0% 5% 5% 5%;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 90%;
 }

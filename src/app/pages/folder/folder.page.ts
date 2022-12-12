@@ -17,8 +17,8 @@ export class FolderPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
   public folder: string = '';
   public myShelf$: Observable<Shelf>;
-  public bookName: string = '';
   public book$: Observable<Book[]>;
+  public bookID: string = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -26,7 +26,7 @@ export class FolderPage implements OnInit {
     public scan: ScanService
   ) {
     this.folder = activatedRoute.snapshot.paramMap.get('id')!;
-    if (this.folder  === 'Wishlist' || this.folder === 'Favorites') {
+    if (this.folder === 'Wishlist' || this.folder === 'Favorites') {
       dataService.addShelf(this.folder);
     }
     this.myShelf$ = dataService.getShelf$(this.folder);

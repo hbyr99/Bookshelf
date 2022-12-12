@@ -59,15 +59,17 @@ export class DataService {
 
   public async addShelf(shelfName: string): Promise<string> {
     if (shelfName === 'Favorites' || shelfName === 'Wishlist') {
-      setDoc(
-        doc(this.firestore, 'users', this.userID, 'shelves', shelfName),
-        { name: shelfName, }
-      );
-      return shelfName;
-    } else {
-      const docRef =  await addDoc(collection(this.firestore, 'users', this.userID, 'shelves'), {
+      setDoc(doc(this.firestore, 'users', this.userID, 'shelves', shelfName), {
         name: shelfName,
       });
+      return shelfName;
+    } else {
+      const docRef = await addDoc(
+        collection(this.firestore, 'users', this.userID, 'shelves'),
+        {
+          name: shelfName,
+        }
+      );
       return docRef.id;
     }
   }
@@ -89,6 +91,20 @@ export class DataService {
         description: book.description,
         imageLinks: book.imageLinks,
       }
+    );
+  }
+
+  public deleteBook(shelfID: string, bookID: string): void {
+    deleteDoc(
+      doc(
+        this.firestore,
+        'users',
+        this.userID,
+        'shelves',
+        shelfID,
+        'books',
+        bookID
+      )
     );
   }
 

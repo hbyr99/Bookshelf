@@ -9,6 +9,7 @@ import { Book, Shelf } from './utils/interfaces';
 import { PickerController } from '@ionic/angular';
 import { AlertOptions } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,8 @@ export class AppComponent {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private router: Router,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private toastController: ToastController
   ) {
     auth.user.subscribe((user) => {
       this.shelfList = data.shelves$;
@@ -71,7 +73,10 @@ export class AppComponent {
         {
           text: 'Confirm',
           handler: (shelfName) => {
-            this.data.addShelf(shelfName.NewShelfName).then(id => this.router.navigateByUrl('/folder/' + id));
+            this.data
+              .addShelf(shelfName.NewShelfName)
+              .then((id) => this.router.navigateByUrl('/folder/' + id));
+            this.ToastAlert('Shelf Added!');
           },
         },
       ],
@@ -110,6 +115,8 @@ export class AppComponent {
             text: 'Confirm',
             handler: (selected) => {
               this.data.addBook(this.selectedBook, selected.shelf.value);
+              this.closeBookInfo();
+              this.ToastAlert('Book added!');
             },
           },
         ],
@@ -158,6 +165,7 @@ export class AppComponent {
           handler: () => {
             this.data.deleteShelf(shelf.id);
             this.router.navigateByUrl('');
+            this.ToastAlert('Shelf Deleted!');
           },
         },
         {
@@ -171,6 +179,17 @@ export class AppComponent {
     });
 
     await actionSheet.present();
+  }
+
+  public async ToastAlert(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1000,
+      position: 'bottom',
+      cssClass: 'custom-toast',
+    });
+
+    await toast.present();
   }
 
   public async onLogout(): Promise<void> {

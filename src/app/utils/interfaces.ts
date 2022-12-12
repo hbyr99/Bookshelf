@@ -9,6 +9,7 @@ export interface Book {
   categories: string[];
   description: string;
   imageLinks: { smallThumbnail: string; thumbnail: string };
+  id: string;
 }
 
 export interface UserPhoto {
