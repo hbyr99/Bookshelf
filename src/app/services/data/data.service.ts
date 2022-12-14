@@ -10,6 +10,8 @@ import {
   getDoc,
   updateDoc,
   docData,
+  where,
+  getDocs,
 } from '@angular/fire/firestore';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 import { deleteDoc } from 'firebase/firestore';
@@ -25,6 +27,7 @@ export class DataService {
   private userID: string = '';
   public shelves$: Observable<Shelf[]> = EMPTY;
 
+  // Get current user from Auth
   constructor(private firestore: Firestore, private auth: AuthService) {
     auth.user.subscribe((user) => {
       if (user) {
@@ -37,6 +40,7 @@ export class DataService {
     });
   }
 
+  // Get books Observable from Firebase
   public getBooks$(shelfId: string): Observable<Book[]> {
     return collectionData(
       collection(
@@ -51,12 +55,14 @@ export class DataService {
     ) as Observable<Book[]>;
   }
 
+  // Get shelf Observable from Firebase
   public getShelf$(shelfId: string): Observable<Shelf> {
     return docData(
       doc(this.firestore, 'users', this.userID, 'shelves', shelfId)
     ) as Observable<Shelf>;
   }
 
+  // Add shelf to Firebase
   public async addShelf(shelfName: string): Promise<string> {
     if (shelfName === 'Favorites' || shelfName === 'Wishlist') {
       setDoc(doc(this.firestore, 'users', this.userID, 'shelves', shelfName), {
@@ -74,6 +80,7 @@ export class DataService {
     }
   }
 
+  // Add book to shelf
   public addBook(book: Book, shelfID: string): void {
     addDoc(
       collection(
@@ -94,7 +101,28 @@ export class DataService {
     );
   }
 
-  public deleteBook(shelfID: string, bookID: string): void {
+  // Update whether book is favorited 
+  public updateBookFavorite(
+    bookID: string,
+    shelfID: string,
+    favorites: boolean
+  ): void {
+    updateDoc(
+      doc(
+        this.firestore,
+        'users',
+        this.userID,
+        'shelves',
+        shelfID,
+        'books',
+        bookID
+      ),
+      { favorites: favorites }
+    );
+  }
+
+  // Delete book from shelf
+  public deleteBook(bookID: string, shelfID: string): void {
     deleteDoc(
       doc(
         this.firestore,
@@ -108,16 +136,40 @@ export class DataService {
     );
   }
 
+  // Delete book according to its name. Mainly used for removing book from favorite shelf
+  public async deleteBookByName(book: Book, shelfID: string): Promise<void> {
+    const booksWithName = await getDocs(
+      query(
+        collection(
+          this.firestore,
+          'users',
+          this.userID,
+          'shelves',
+          shelfID,
+          'books'
+        ),
+        where('title', '==', book.title),
+        where('authors', '==', book.authors)
+      )
+    );
+    booksWithName.forEach((doc) => {
+      this.deleteBook(doc.id, shelfID);
+    });
+  }
+
+  // Update shelf name
   public changeShelfName(shelfname: string, shelfID: string): void {
     updateDoc(doc(this.firestore, 'users', this.userID, 'shelves', shelfID), {
       name: shelfname,
     });
   }
 
+  // Delete shelf from Firebase
   public deleteShelf(shelfID: string): void {
     deleteDoc(doc(this.firestore, 'users', this.userID, 'shelves', shelfID));
   }
 
+  // Find book from Google Books API
   public async findBook(bookName: string): Promise<Book[]> {
     let booksFound: any[] = [];
     const APIKey = 'AIzaSyChtrHz2afCweT8Uk1BKKG7-rnbsNTyzy4';

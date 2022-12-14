@@ -15,6 +15,7 @@ export class RegisterPage implements OnInit {
   public platform: string;
   public registerForm: FormGroup;
 
+  // Create the registration form
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
@@ -30,6 +31,7 @@ export class RegisterPage implements OnInit {
     });
   }
 
+  // Register the user if the information is valid
   public async onRegister(form: FormGroup): Promise<void> {
     const loading = await this.loadingCtrl.create();
     await loading.present();

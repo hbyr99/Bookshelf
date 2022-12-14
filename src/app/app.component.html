@@ -1,22 +1,12 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu
-      contentId="main-content"
-      type="overlay"
-      [hidden]="!auth.showLoginFeatures || scan.scanActive"
-    >
+    <ion-menu contentId="main-content" type="overlay" [hidden]="!auth.showLoginFeatures || scan.scanActive">
       <ion-content>
         <ion-list id="inbox-list">
           <ion-menu-toggle autoHide="false">
             <section *ngFor="let shelf of shelfList | async">
-              <ion-item
-                *ngIf="shelf.name !== 'Favorites' && shelf.name !== 'Wishlist'"
-                routerDirection="root"
-                routerLink="/folder/{{ shelf.id }}"
-                lines="none"
-                detail="false"
-                routerLinkActive="selected"
-              >
+              <ion-item *ngIf="shelf.name !== 'Favorites' && shelf.name !== 'Wishlist'" routerDirection="root"
+                routerLink="/folder/{{ shelf.id }}" lines="none" detail="false" routerLinkActive="selected">
                 <ion-label id="shelf-list">{{ shelf.name }}</ion-label>
                 <ion-buttons>
                   <ion-button (click)="openSettings(shelf)">
@@ -34,14 +24,8 @@
             <ion-icon name="add-outline"></ion-icon>
             <ion-label>Add shelf</ion-label>
           </ion-item>
-          <ion-item
-            *ngFor="let label of labels"
-            routerDirection="root"
-            routerLink="/folder/{{ label }}"
-            lines="none"
-            detail="false"
-            routerLinkActive="selected"
-          >
+          <ion-item *ngFor="let label of labels" routerDirection="root" routerLink="/folder/{{ label }}" lines="none"
+            detail="false" routerLinkActive="selected">
             <ion-label>{{ label }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
@@ -57,19 +41,11 @@
         </ion-footer>
       </ion-menu-toggle>
     </ion-menu>
-    <ion-router-outlet
-      id="main-content"
-      [hidden]="scan.scanActive"
-      [style.--background]="scan.scanActive ? '#00000000' : null"
-    >
+    <ion-router-outlet id="main-content" [hidden]="scan.scanActive"
+      [style.--background]="scan.scanActive ? '#00000000' : null">
     </ion-router-outlet>
   </ion-split-pane>
-  <ion-fab
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-    [hidden]="!auth.showLoginFeatures || scan.scanActive"
-  >
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" [hidden]="!auth.showLoginFeatures || scan.scanActive">
     <ion-fab-button color="primary">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
@@ -95,10 +71,7 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <ion-searchbar
-          [debounce]="500"
-          (ionChange)="handleChange($event)"
-        ></ion-searchbar>
+        <ion-searchbar [debounce]="500" (ionChange)="handleSearchBook($event)"></ion-searchbar>
         <ion-list>
           <ion-item id="modify-item" *ngFor="let book of bookList">
             <ion-label class="bookLabel" (click)="openBookInfo(book)">
@@ -128,18 +101,15 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <img
-          [src]="selectedBook.imageLinks.smallThumbnail"
-          class="info-image"
-        />
+        <img [src]="getHTTPUrl(selectedBook.imageLinks.smallThumbnail)" class="info-image" />
         <h1>{{ selectedBook.title }}</h1>
         <span>
           <div></div>
           &nbsp;&nbsp;Authors: &nbsp;
           <p class="authorName" *ngFor="let author of selectedBook.authors">
             {{ author }}
-          </p></span
-        >
+          </p>
+        </span>
         <span>
           <div></div>
           &nbsp;&nbsp;Categories:
@@ -147,12 +117,11 @@
             {{ categories }}
           </div>
         </span>
-
         <span>
           <div></div>
           &nbsp;&nbsp;Descriptions:
-          <p class="description">{{ selectedBook.description }}</p></span
-        >
+          <p class="description">{{ selectedBook.description }}</p>
+        </span>
       </ion-content>
     </ng-template>
   </ion-modal>

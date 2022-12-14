@@ -1,3 +1,4 @@
+/* Interface definition file */
 export interface Shelf {
   id: string;
   name: string;
@@ -10,9 +11,6 @@ export interface Book {
   description: string;
   imageLinks: { smallThumbnail: string; thumbnail: string };
   id: string;
+  favorites?: boolean;
 }
 
-export interface UserPhoto {
-  filepath: string;
-  webviewPath: string;
-}

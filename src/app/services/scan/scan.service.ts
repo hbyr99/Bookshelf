@@ -9,6 +9,7 @@ export class ScanService {
 
   constructor() {}
 
+  // Start barcode scanner
   public async scanBarcode(): Promise<string | null> {
     const c = confirm('Do you want to scan a barcode?');
     const permission = await this.checkPermission();
@@ -19,6 +20,7 @@ export class ScanService {
     }
   }
 
+  // Initiate actual scan
   private async startScan(): Promise<string | null> {
     this.scanActive = true;
     BarcodeScanner.hideBackground();
@@ -31,6 +33,7 @@ export class ScanService {
     }
   }
 
+  // Check if permissions were given
   private async checkPermission(): Promise<boolean> {
     // check if user already granted permission
     const status = await BarcodeScanner.checkPermission({ force: false });

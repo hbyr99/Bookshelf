@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { async } from '@firebase/util';
 import { IonModal } from '@ionic/angular';
-import { throws } from 'assert';
 import { Observable } from 'rxjs';
 import { ScanService } from 'src/app/services/scan/scan.service';
 import { DataService } from '../../services/data/data.service';
@@ -20,6 +18,7 @@ export class FolderPage implements OnInit {
   public book$: Observable<Book[]>;
   public bookID: string = '';
 
+  // Get shelf and book info to display data from
   constructor(
     private activatedRoute: ActivatedRoute,
     public dataService: DataService,

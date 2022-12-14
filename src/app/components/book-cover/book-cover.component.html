@@ -1,21 +1,21 @@
 <div class="cover">
   <div class="book-info">
-    <ion-card class="mod-card" (click)="openBookInfo()">
+    <ion-card class="mod-card">
       <ion-item-sliding>
-        <ion-item>
+        <ion-item (click)="openBookInfo()">
           <ion-card-content>
-            <img class="cover-img" [src]="getSanitizeUrl(imageLinks)" />
-            <ion-card-title> {{ title }} </ion-card-title>
+            <img class="cover-img" [src]="getHTTPUrl(book.imageLinks.smallThumbnail)" />
+            <ion-card-title> {{ book.title }} </ion-card-title>
             <p class="card-subtitle" [ngClass]="displayAuthor()">
               {{ authorString }}
             </p>
           </ion-card-content>
         </ion-item>
         <ion-item-options side="end">
-          <ion-item-option color="danger">
+          <ion-item-option color="danger" (click)="deleteBook()">
             <ion-icon name="trash-outline"></ion-icon>
           </ion-item-option>
-        </ion-item-options>
+        </ion-item-options> 
       </ion-item-sliding>
     </ion-card>
   </div>
@@ -36,7 +36,7 @@
               </ion-button>
             </ion-buttons>
             <ion-buttons slot="end">
-              <ion-button (click)="changeIcon()">
+              <ion-button (click)="toFavorites()">
                 <ion-icon class="heart-button" name="{{ favIcon }}">
                 </ion-icon> </ion-button
             ></ion-buttons>
@@ -44,22 +44,22 @@
         </ion-header>
         <ion-content>
           <div class="forStickyDisplay">
-            <img [src]="getSanitizeUrl(imageLinks)" class="info-image" />
-            <h1>{{ title }}</h1>
-            <p class="authorName" *ngFor="let author of authorList">
+            <img [src]="getHTTPUrl(book.imageLinks.thumbnail)" class="info-image" />
+            <h1>{{ book.title }}</h1>
+            <p class="authorName" *ngFor="let author of book.authors">
               {{ author }}
             </p>
             <hr />
           </div>
 
           <div class="outer-genre">
-            <div class="genre" *ngFor="let category of categoryList">
+            <div class="genre" *ngFor="let category of book.categories">
               {{ category }}
             </div>
           </div>
           <hr />
           <h3>Description</h3>
-          <p class="description">{{ description }}</p>
+          <p class="description">{{ book.description }}</p>
         </ion-content>
       </ng-template>
     </ion-modal>

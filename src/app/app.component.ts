@@ -41,30 +41,36 @@ export class AppComponent {
     });
   }
 
+  // Open search book modal
   public setSearchBook(state: boolean): void {
     this.isSearchBook = state;
   }
 
+  // Open book information modal
   public openBookInfo(book: Book): void {
     this.isOpenBookInfo = true;
     this.selectedBook = book;
   }
 
+  // Close book information modal
   public closeBookInfo(): void {
     this.isOpenBookInfo = false;
   }
 
-  public async handleChange(event: any): Promise<void> {
+  // Search for book from searchbox
+  public async handleSearchBook(event: any): Promise<void> {
     const res = await this.data.findBook(event.target.value);
     console.log(res);
     this.bookList = res;
   }
 
+  // Add book from search book page 
   public async addBookDirectly(book: Book): Promise<void> {
     this.selectedBook = book;
     await this.openPicker();
   }
 
+  // Add a new shelf
   public async addNewShelf(): Promise<void> {
     const alert = await this.alertCtrl.create({
       header: 'Please enter new shelf name',
@@ -93,6 +99,7 @@ export class AppComponent {
     await alert.present();
   }
 
+  // Open picker to choose shelf to add book to
   public async openPicker(): Promise<void> {
     this.shelfList.pipe(take(1)).subscribe(async (data) => {
       const options = data.map((shelf) => {
@@ -125,6 +132,7 @@ export class AppComponent {
     });
   }
 
+  // Open alert to insert shelf name
   public async shelfNameInput(shelfID: string): Promise<void> {
     const alert = await this.alertCtrl.create({
       header: 'Please enter new shelf name',
@@ -150,6 +158,7 @@ export class AppComponent {
     await alert.present();
   }
 
+  // Open shelf settings
   public async openSettings(shelf: Shelf): Promise<void> {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Edit bookshelves',
@@ -181,7 +190,8 @@ export class AppComponent {
     await actionSheet.present();
   }
 
-  public async ToastAlert(message: string) {
+  // Custom toast handler function
+  public async ToastAlert(message: string): Promise<void> {
     const toast = await this.toastController.create({
       message: message,
       duration: 1000,
@@ -192,6 +202,7 @@ export class AppComponent {
     await toast.present();
   }
 
+  // Logout user
   public async onLogout(): Promise<void> {
     const loading = await this.loadingCtrl.create();
     await loading.present();
@@ -214,11 +225,18 @@ export class AppComponent {
     }
   }
 
+  // Start barcode scanner
   public async startScan(): Promise<void> {
     const isbn = await this.scan.scanBarcode();
     if (isbn) {
       const res = await this.data.findBook(isbn);
       this.openBookInfo(res[0]);
     }
+  }
+
+  // Convert HTTP links to HTTPS
+  public getHTTPUrl(url: string): string {
+    const call = url.slice(4);
+    return 'https' + call;
   }
 }

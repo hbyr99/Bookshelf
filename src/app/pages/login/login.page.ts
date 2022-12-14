@@ -14,6 +14,7 @@ export class LoginPage implements OnInit {
   public platform: string;
   public loginForm: FormGroup;
 
+  // Create the login form
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
@@ -28,6 +29,7 @@ export class LoginPage implements OnInit {
     });
   }
 
+  // Login user if information is valid
   public async onLogin(form: FormGroup): Promise<void> {
     const loading = await this.loadingCtrl.create();
     await loading.present();
