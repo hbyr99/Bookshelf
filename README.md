@@ -56,6 +56,9 @@ npm, Angular and Ionic are required to install the application.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
+[Angular-url]: https://angular.io/
+
 
 
 
